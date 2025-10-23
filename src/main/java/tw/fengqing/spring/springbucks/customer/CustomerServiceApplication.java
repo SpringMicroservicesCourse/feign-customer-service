@@ -2,15 +2,16 @@ package tw.fengqing.spring.springbucks.customer;
 
 import tw.fengqing.spring.springbucks.customer.support.CustomConnectionKeepAliveStrategy;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @Slf4j
@@ -24,13 +25,18 @@ public class CustomerServiceApplication {
 
 	@Bean
 	public CloseableHttpClient httpClient() {
+		// 整合連線池管理器和 HttpClient 配置
 		return HttpClients.custom()
-				.setConnectionTimeToLive(30, TimeUnit.SECONDS)
-				.evictIdleConnections(30, TimeUnit.SECONDS)
-				.setMaxConnTotal(200)
-				.setMaxConnPerRoute(20)
-				.disableAutomaticRetries()
-				.setKeepAliveStrategy(new CustomConnectionKeepAliveStrategy())
+				.setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
+						.setMaxConnTotal(200) // 最大連線數
+						.setMaxConnPerRoute(20) // 每個路由最大連線數
+						.setDefaultConnectionConfig(ConnectionConfig.custom()
+								.setTimeToLive(TimeValue.ofSeconds(30)) // 連線存活時間
+								.build())
+						.build())
+				.evictIdleConnections(TimeValue.ofSeconds(30)) // 空閒連線清理
+				.disableAutomaticRetries() // 停用自動重試
+				.setKeepAliveStrategy(new CustomConnectionKeepAliveStrategy()) // 自定義 Keep-Alive 策略
 				.build();
 	}
 }

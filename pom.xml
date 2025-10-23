@@ -6,25 +6,21 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.4.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
-	<groupId>tw.fengqing.spring.springbucks</groupId>
-	<artifactId>customer-service</artifactId>
+	<groupId>tw.fengqing.spring.springbucks.customer</groupId>
+	<artifactId>feign-customer-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>customer-service</name>
+	<name>feign-customer-service</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>21</java.version>
-		<!-- Spring Cloud 版本管理 -->
 		<spring-cloud.version>2024.0.2</spring-cloud.version>
-		<!-- 第三方依賴版本管理 -->
 		<joda-money.version>2.0.2</joda-money.version>
-		<commons-lang3.version>3.17.0</commons-lang3.version>
 	</properties>
 
 	<dependencies>
-		<!-- Spring Boot 預設依賴 - 不指定版本，使用 Spring Boot 管理 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -33,24 +29,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
-		<!-- Spring Cloud 依賴 - 版本由 spring-cloud-dependencies 管理 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-		<!-- Feign 依賴 - OpenFeign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-		<!-- Feign 依賴 - HttpClient5 -->
 		<dependency>
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-httpclient</artifactId>
 		</dependency>
-
-		<!-- 第三方依賴 - 版本在 dependencyManagement 中統一管理 -->
 		<dependency>
 			<groupId>org.joda</groupId>
 			<artifactId>joda-money</artifactId>
@@ -63,15 +53,11 @@
 			<groupId>org.apache.httpcomponents.client5</groupId>
 			<artifactId>httpclient5</artifactId>
 		</dependency>
-
-		<!-- 開發工具依賴 -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
-		<!-- 測試依賴 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -81,7 +67,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Spring Cloud 依賴管理 -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -89,17 +74,10 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
-			<!-- 第三方依賴版本覆蓋 - 覆蓋 Spring Boot 預設版本 -->
 			<dependency>
 				<groupId>org.joda</groupId>
 				<artifactId>joda-money</artifactId>
 				<version>${joda-money.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${commons-lang3.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

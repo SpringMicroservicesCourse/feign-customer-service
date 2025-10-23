@@ -36,7 +36,7 @@ public class CustomerRunner implements ApplicationRunner {
 
     private Long orderCoffee() {
         NewOrderRequest orderRequest = NewOrderRequest.builder()
-                .customer("Li Lei")
+                .customer("Ray Chu")
                 .items(Arrays.asList("capuccino"))
                 .build();
         CoffeeOrder order = coffeeOrderService.create(orderRequest);
